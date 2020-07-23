@@ -113,7 +113,7 @@ T = 0:n
 alphas = [0, 0.8, 0.98]
 
 X, Y, Z = simulate_ts.(alphas, n)
-plot(T, X, title = "Time Series", label = L"\alpha = 0")
+plot(T, X, title = "Time Series", size = (900, 600), label = L"\alpha = 0")
 plot!(T, Y, label = L"\alpha = 0.8")
 plot!(T, Z, label = L"\alpha = 0.98")
 xlabel!("Time")
