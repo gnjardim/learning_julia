@@ -1,7 +1,8 @@
 # exercise 1 --------------------------------------------------------------
+using QuantEcon
+
 function asymptoticvar(A, Σ; tol = 1e-10)
     St = similar(A)
-    
     diff = Inf
     tol_matrix = fill(tol, size(A))
 
@@ -16,8 +17,6 @@ function asymptoticvar(A, Σ; tol = 1e-10)
 end
 
 # test
-using QuantEcon
-
 A = [0.8 -0.2; -0.1 0.7]
 Σ = [0.5 0.4; 0.4 0.6]
 asymptoticvar(A, Σ)
@@ -27,7 +26,7 @@ solve_discrete_lyapunov(A, Σ * Σ')
 # exercise 2 --------------------------------------------------------------
 using LaTeXStrings, Plots
 
-function simulatets(theta, T)
+function simulatets(theta, T; rolling = false)
     gamma, sigma = 1, 1
     y = zeros(T + 1)
     rolling_mean = zeros(T)
@@ -37,7 +36,11 @@ function simulatets(theta, T)
         rolling_mean[t] = sum(y) / t
     end    
 
-    return rolling_mean
+    if rolling
+        return rolling_mean
+    end
+
+    return y
 end
 
 
@@ -54,13 +57,13 @@ end
 # parameters
 Theta = [0.8, 0.9, 0.98]
 T = 150
-y1, y2, y3 = simulatets.(Theta, T)
+y1, y2, y3 = simulatets.(Theta, T, rolling = true)
 
+# plot rolling mean
 plot(1:T, y1, size = (1200, 900), label = L"\theta = 0.8")
 plot!(1:T, y2, label = L"\theta = 0.9")
 plot!(1:T, y3, label = L"\theta = 0.98")
 xlabel!("Time")
-
 
 # histogram
 N = 200
@@ -91,6 +94,7 @@ function OLS(y, x1, x2)
     # estimate sigma
     epsilon = X * beta - y
     sigma = sqrt((epsilon' * epsilon) / length(y))
+    
     return vcat(beta, sigma)
 end
 
@@ -99,7 +103,7 @@ M = 100000
 a, b, c, d, sigma = [zeros(M) for _ in 1:5]
 
 for i in 1:M
-    y, x1, x2 = simulate_data(0.1, 0.2, 0.5, 1.0; N = 50)
+    y, x1, x2 = simulate_data(0.1, 0.2, 0.5, 1.0, N = 50)
     a[i], b[i], c[i], d[i], sigma[i] = OLS(y, x1, x2)
 end
 
