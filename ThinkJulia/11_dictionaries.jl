@@ -46,8 +46,9 @@ findall(isequal(2), h)
 
 
 # Memos
-# For performance reasons, you should declare a global variable constant. 
-# You can no longer reassign the variable but if it refers to a mutable value, you can modify the value
+
+### For performance reasons, you should declare a global variable constant. 
+### You can no longer reassign the variable but if it refers to a mutable value, you can modify the value
 const known = Dict(0=>0, 1=>1)
 
 function fibonacci(n)
@@ -56,7 +57,7 @@ function fibonacci(n)
     end
     res = fibonacci(n-1) + fibonacci(n-2)
     
-    # If a global variable refers to a mutable value, you can modify the value without declaring the variable global
+    ### If a global variable refers to a mutable value, you can modify the value without declaring the variable global
     known[n] = res 
     return res
 end
