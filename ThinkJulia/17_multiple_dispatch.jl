@@ -107,7 +107,7 @@ methods(+)
 
 
 # Exercise 17-5 -----------------------------------------------------------
-mutable struct Kangaroo
+struct Kangaroo
     pouchcontents :: Array
     function Kangaroo(pouchcontents::Array = [])
         new(pouchcontents)
